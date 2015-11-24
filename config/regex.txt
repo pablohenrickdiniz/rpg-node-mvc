@@ -1,0 +1,8 @@
+^\@[a-zA-Z]+$  match singular annotation
+^'[a-zA-z0-9]+'((,\s*'[a-zA-z0-9]+')+)?$ match parameters
+\@[a-zA-Z]+(\('[a-zA-z0-9\/]+'((,\s*'[a-zA-z0-9\/]+')+)?\))? match singular and array expressions
+^\/\*(.|\n)*\*\/$ match comments
+^\/\/.*$ match inline comments
+^[a-zA-z0-9]+((,\s*[a-zA-z0-9]+)+)?$ match parameters without ''
+[a-zA-Z0-5]+\s*\:\s*function capture
+[a-zA-Z0-5]+(?=\s*\:\s*function) capture a function name
