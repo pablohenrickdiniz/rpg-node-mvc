@@ -4,12 +4,13 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "annotation": "^0.1.0",
-    "express": "^4.13.3",
+    "deepmerge": "^0.2.10",
+    "mmmagic": "^0.4.1",
     "moment": "^2.10.6",
+    "express": "^4.13.3",
+    "annotation": "^0.1.0",
     "mongoose": "^4.2.7",
     "multer": "^1.1.0",
-    "deepmerge": "^0.2.10",
     "ucfirst": "^1.0.0"
   },
   "devDependencies": {},
