@@ -1,9 +1,9 @@
-var paths = require('app/config/paths');
+var paths = require('node-mvc/config/paths');
 var multer = require('multer');
 var crypto = require('crypto');
 var mmm = require('mmmagic'),
     Magic = mmm.Magic;
-var name_parser = require('app/config/name_parser');
+var name_parser = require('node-mvc/config/name_parser');
 var deepmerge = require('deepmerge');
 var bodyParser = require('body-parser');
 

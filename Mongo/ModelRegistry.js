@@ -1,12 +1,12 @@
-var paths = require('app/config/paths');
-var database_config = require('app/config/app').database;
+var paths = require('node-mvc/config/paths');
+var database_config = require(paths.APP_ROOT+'/config/app').database;
 var ucfirst = require('ucfirst');
-var file = require('app/config/file');
+var file = require('node-mvc/config/file');
 var mongoose = require('mongoose');
 var validate = require('validate.js');
 var FieldError = require('./FieldError');
 var moment = require('moment');
-var app_config = require('app/config/app');
+var app_config = require(paths.APP_ROOT+'/config/app');
 
 
 module.exports = {

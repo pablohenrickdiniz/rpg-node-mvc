@@ -1,6 +1,6 @@
-var FieldError = require('app/Mongo/FieldError');
-var ModelRegistry = require('app/Mongo/ModelRegistry');
-var parse_messages = require('app/Mongo/parse_messages');
+var FieldError = require('node-mvc/Mongo/FieldError');
+var ModelRegistry = require('node-mvc/Mongo/ModelRegistry');
+var parse_messages = require('node-mvc/Mongo/parse_messages');
 
 var Model = {
     name:'Model',

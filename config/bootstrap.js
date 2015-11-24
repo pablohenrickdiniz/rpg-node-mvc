@@ -3,14 +3,14 @@ var regex = require('./regex');
 var express = require('express');
 var app = express();
 var ucfirst = require('ucfirst');
-var app_config = require('app/config/app');
-var file = require('app/config/file');
+var app_config = require(paths.APP_ROOT+'/config/app');
+var file = require('node-mvc/config/file');
 var moment = require('moment');
 var annotation = require('annotation');
 var controllers_dir = paths.APP_CONTROLLER;
-var defaultController = require('app/Controller/Controller');
+var defaultController = require('node-mvc/Controller/Controller');
 var deepmerge = require('deepmerge');
-var ModelRegistry = require('app/Mongo/ModelRegistry');
+var ModelRegistry = require('node-mvc/Mongo/ModelRegistry');
 
 
 _initializeHeaders();
@@ -180,7 +180,7 @@ function _getAnnotationValueByKey(key,annotations){
 function _initializeBehaviors(behaviors){
     if(behaviors instanceof  Array){
         behaviors.forEach(function(name){
-            var behaviorFile = 'app/Behavior/'+ucfirst(name)+'Behavior';
+            var behaviorFile = 'node-mvc/Behavior/'+ucfirst(name)+'Behavior';
             var behavior_class = require(behaviorFile);
             var behavior_instance = new behavior_class();
             behavior_instance._initialize(app);
