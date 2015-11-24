@@ -1,0 +1,28 @@
+{
+  "name": "node-mvc",
+  "version": "1.0.0",
+  "description": "mvc",
+  "main": "index.js",
+  "dependencies": {
+    "annotation": "^0.1.0",
+    "deepmerge": "^0.2.10",
+    "moment": "^2.10.6",
+    "ucfirst": "^1.0.0",
+    "mongoose": "^4.2.7",
+    "express": "^4.13.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pablohenrickdiniz/node-mvc.git"
+  },
+  "author": "Pablo Henrick Diniz",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pablohenrickdiniz/node-mvc/issues"
+  },
+  "homepage": "https://github.com/pablohenrickdiniz/node-mvc#readme"
+}
