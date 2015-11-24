@@ -1,0 +1,6 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea
+*.min.min.js
+*.min.min.css
+node_modules
+bower_components
