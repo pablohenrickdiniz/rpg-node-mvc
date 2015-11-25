@@ -11,6 +11,7 @@ var controllers_dir = paths.APP_CONTROLLER;
 var defaultController = require('node-mvc/Controller/Controller');
 var deepmerge = require('deepmerge');
 var ModelRegistry = require('node-mvc/Mongo/ModelRegistry');
+var _ = require('lodash');
 
 
 _initializeHeaders();
@@ -103,11 +104,15 @@ function _recursiveCheckAnotations(files,callback){
             var routes_created = false;
             Object.keys(controller.methods).forEach(function(method){
                 var annotations = AnnotationReader.getMethodAnnotations(method);
-                var requestMethod = _getAnnotationValueByKey('RequestMethod',annotations);
+                var requestMethods = _getAnnotationValuesByKey('RequestMethod',annotations);
                 var contentType = _getAnnotationValueByKey('ContentType',annotations);
 
-                if(requestMethod != null && _isRequest(requestMethod)){
-                    requestMethod = requestMethod.toUpperCase();
+                if(requestMethods.length > 0){
+                    requestMethods = requestMethods.map(function(val){
+                        return val.toUpperCase();
+                    });
+
+                    requestMethods = _.unique(requestMethods,true);
                     var uri = _getAnnotationValueByKey('uri',annotations);
                     if(uri == null){
                         uri =  '/'+method;
@@ -132,22 +137,24 @@ function _recursiveCheckAnotations(files,callback){
                     routes_created = true;
                     console.log(router_name+uri);
 
-                    switch(requestMethod){
-                        case 'GET':
-                            router.get(uri,action);
-                            break;
-                        case 'POST':
-                            router.post(uri,action);
-                            break;
-                        case 'PUT':
-                            router.put(uri,action);
-                            break;
-                        case 'PATCH':
-                            router.patch(uri,action);
-                            break;
-                        case 'DELETE':
-                            router.delete(uri,action);
-                    }
+                    requestMethods.forEach(function(requestMethod){
+                        switch(requestMethod){
+                            case 'GET':
+                                router.get(uri,action);
+                                break;
+                            case 'POST':
+                                router.post(uri,action);
+                                break;
+                            case 'PUT':
+                                router.put(uri,action);
+                                break;
+                            case 'DELETE':
+                                router.delete(uri,action);
+                                break;
+                            default:
+                                throw new Error('method '+requestMethod+' doesn\'t exists');
+                        }
+                    });
                 }
             });
 
@@ -174,7 +181,16 @@ function _getAnnotationValueByKey(key,annotations){
     return null;
 }
 
-
+function _getAnnotationValuesByKey(key,annotations){
+    var values = [];
+    var size = annotations.length;
+    for(var i = 0; i < size;i++){
+        if(annotations[i].key == key){
+            values.push(annotations[i].value);
+        }
+    }
+    return values;
+}
 
 
 function _initializeBehaviors(behaviors){

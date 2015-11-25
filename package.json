@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "moment": "^2.10.6",
-    "deepmerge": "^0.2.10",
     "annotation": "^0.1.0",
-    "mmmagic": "^0.4.1",
-    "ucfirst": "^1.0.0",
-    "multer": "^1.1.0",
     "express": "^4.13.3",
-    "mongoose": "^4.2.7"
+    "lodash": "^3.10.1",
+    "mmmagic": "^0.4.1",
+    "moment": "^2.10.6",
+    "mongoose": "^4.2.7",
+    "deepmerge": "^0.2.10",
+    "multer": "^1.1.0",
+    "ucfirst": "^1.0.0"
   },
   "devDependencies": {},
   "scripts": {
