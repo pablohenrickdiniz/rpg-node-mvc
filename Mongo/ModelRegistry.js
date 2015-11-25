@@ -7,7 +7,8 @@ var validate = require('validate.js');
 var FieldError = require('./FieldError');
 var moment = require('moment');
 var app_config = require(paths.APP_ROOT+'/config/app');
-
+var defaultModel = require('node-mvc/Model/Model');
+var deepmerge = require('deepmerge');
 
 module.exports = {
     models: [],
@@ -47,7 +48,9 @@ module.exports = {
         var self = this;
         if (self.configs[modelName] == undefined) {
             var module = paths.APP_MODEL + '/' + modelName;
-            self.configs[modelName] = require(module);
+            var model_config = require(module);
+            model_config = deepmerge(defaultModel,model_config);
+            self.configs[modelName] = model_config;
         }
 
         return self.configs[modelName];
