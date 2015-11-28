@@ -5,13 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "annotation": "^0.1.0",
+    "deepmerge": "^0.2.10",
     "express": "^4.13.3",
     "lodash": "^3.10.1",
-    "mmmagic": "^0.4.1",
     "moment": "^2.10.6",
-    "mongoose": "^4.2.7",
-    "deepmerge": "^0.2.10",
+    "mmmagic": "^0.4.1",
     "multer": "^1.1.0",
+    "mongoose": "^4.2.7",
     "ucfirst": "^1.0.0"
   },
   "devDependencies": {},

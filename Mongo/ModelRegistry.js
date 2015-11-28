@@ -3,12 +3,9 @@ var database_config = require(paths.APP_ROOT+'/config/app').database;
 var ucfirst = require('ucfirst');
 var file = require('node-mvc/config/file');
 var mongoose = require('mongoose');
-var validate = require('validate.js');
 var FieldError = require('./FieldError');
 var moment = require('moment');
 var app_config = require(paths.APP_ROOT+'/config/app');
-var defaultModel = require('node-mvc/Model/Model');
-var deepmerge = require('deepmerge');
 
 module.exports = {
     models: [],
@@ -49,7 +46,6 @@ module.exports = {
         if (self.configs[modelName] == undefined) {
             var module = paths.APP_MODEL + '/' + modelName;
             var model_config = require(module);
-            model_config = deepmerge(defaultModel,model_config);
             self.configs[modelName] = model_config;
         }
 
@@ -76,55 +72,6 @@ module.exports = {
 
         return self.conn[connectionName];
     },
-    setValueByDot: function (fieldName, obj, value) {
-        var fields = [];
-        if (fieldName.indexOf('.') != -1) {
-            fields = fieldName.split('.');
-            var i;
-            var size = fields.length;
-            if (size > 0) {
-                for (var i = 0; i < size - i; i++) {
-                    var field = fields[i];
-                    if (obj[field] != undefined) {
-                        obj = obj[field];
-                    }
-                    else {
-                        break;
-                    }
-                }
-                obj[fields[fields.length - 1]] = value;
-            }
-        }
-        else {
-            obj[fieldName] = value;
-        }
-    },
-    getValueByDot: function (fieldName, obj) {
-        var fields = [];
-        if (fieldName.indexOf('.') != -1) {
-            fields = fieldName.split('.');
-            var i;
-            var size = fields.length;
-
-            if (size > 0) {
-                for (i = 0; i < size; i++) {
-                    var field = fields[i];
-                    if (obj[field] != undefined) {
-                        obj = obj[field];
-                    }
-                    else {
-                        break;
-                    }
-                }
-            }
-        }
-        else {
-            obj = obj[fieldName];
-        }
-
-        return obj;
-    }
-    ,
     prepareModelCallbacks: function (fields, schema, model, parent) {
         var self = this;
         Object.keys(fields).forEach(function (key) {
@@ -160,7 +107,7 @@ module.exports = {
                     var data = moment(this[key]);
 
                     if (data.isValid()) {
-                        eval('this.' + fieldName + ' = data.toDate()')
+                        eval('this.' + fieldName + ' = data.toDate()');
                         next();
                     }
                     else {

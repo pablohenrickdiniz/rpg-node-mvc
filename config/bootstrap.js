@@ -8,7 +8,7 @@ var file = require('node-mvc/config/file');
 var moment = require('moment');
 var annotation = require('annotation');
 var controllers_dir = paths.APP_CONTROLLER;
-var defaultController = require('node-mvc/Controller/Controller');
+var defaultController = _transformClass(require('node-mvc/Controller/Controller'));
 var deepmerge = require('deepmerge');
 var ModelRegistry = require('node-mvc/Mongo/ModelRegistry');
 var _ = require('lodash');
@@ -41,37 +41,6 @@ function _initializeHeaders(){
 }
 
 
-
-/*
- Controller.prototype._parseRequest = function(){
- var self = this;
- var router = self._getRouter();
- router.all('/*',function(req,res,next){
- self.request = req;
- self.response = res;
- next();
- });
-
- router.get('/*',function(req,res,next){
- self.list();
- });
-
- router.post('/*',function(req,res,next){
- self.add();
- });
-
- router.put('/*',function(req,res,next){
- self.edit();
- });
-
- router.delete('/*',function(req,res,next){
- self.deleteAll();
- });
-
- };*/
-
-
-
 function _initializeControllers(callback){
     if (file.file_exists(controllers_dir)) {
         var file_list = file.file_list(controllers_dir);
@@ -85,19 +54,62 @@ function _initializeControllers(callback){
     _recursiveCheckAnotations(controllers,callback);
 }
 
+
+function _transformClass(obj){
+    var newClass = null;
+    if(typeof obj.__constructor == 'function'){
+        newClass = obj.__constructor;
+    }
+    else{
+        newClass = function(){}
+    }
+    Object.keys(obj).forEach(function(key){
+        if(key != '__constructor' && key != 'methods' && typeof obj[key] == 'function'){
+            newClass.prototype[key] = obj[key];
+        }
+    });
+
+    if(obj.methods != undefined && obj.methods.constructor == {}.constructor){
+        Object.keys(obj.methods).forEach(function(key){
+            newClass.prototype[key] = obj.methods[key];
+        });
+    }
+
+    return newClass;
+}
+
+
+function _inherit(classA,classB){
+    var old_prototype = classA.prototype;
+    classA.prototype = Object.create(classB.prototype);
+    Object.keys(old_prototype).forEach(function(key){
+        classA.prototype[key] = old_prototype[key];
+    });
+    classA.constructor = classA;
+}
+
+
+
 function _recursiveCheckAnotations(files,callback){
     if(files.length > 0){
         var file = files.pop();
         var file_path = controllers_dir+'/'+file;
         var controller= require(file_path);
-        controller = deepmerge(defaultController,controller);
 
-        var modelName = controller.modelName;
+        var controller_class = _transformClass(controller);
+        _inherit(controller_class,defaultController);
+
+
+        var controller_instance = new controller_class();
+
+
+        var modelName = controller_instance.modelName;
         if(modelName != null){
-            controller[modelName] = ModelRegistry.get(modelName);
+            controller_instance[modelName] = ModelRegistry.get(modelName);
         }
 
-        var router_name = controller.name;
+
+        var router_name = controller_instance.name;
         var router = express.Router();
         annotation(file_path,function(AnnotationReader){
             //get annotations related to the class
@@ -113,7 +125,7 @@ function _recursiveCheckAnotations(files,callback){
                     });
 
                     requestMethods = _.unique(requestMethods,true);
-                    var uri = _getAnnotationValueByKey('uri',annotations);
+                    var uri = _getAnnotationValueByKey('Uri',annotations);
                     if(uri == null){
                         uri =  '/'+method;
                     }
@@ -125,18 +137,16 @@ function _recursiveCheckAnotations(files,callback){
 
                     var action = function(req,res,next){
                         res.writeHead(200, {"Content-Type": contentType});
-                        controller.methods[method].apply(controller);
+                        controller_instance[method]();
                         next();
                     };
 
                     router.all('/*',function(req,res,next){
-                        controller.request = req;
-                        controller.response = res;
+                        controller_instance.request = req;
+                        controller_instance.response = res;
                         next();
                     });
                     routes_created = true;
-                    console.log(router_name+uri);
-
                     requestMethods.forEach(function(requestMethod){
                         switch(requestMethod){
                             case 'GET':
@@ -216,7 +226,13 @@ function _initializeLocale(){
 
 
 
-function _isRequest(request){
-    return ['GET','POST','PUT','PATCH','DELETE'].indexOf(request.toUpperCase()) != -1;
-}
+
+
+
+
+
+
+
+
+
 
