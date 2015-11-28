@@ -27,7 +27,6 @@ var Model = {
 
                 callback(errors, data);
             });
-
         }
     },
     _virtuals: {}

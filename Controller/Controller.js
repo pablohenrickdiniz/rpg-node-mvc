@@ -11,7 +11,7 @@ module.exports = {
 
     },
     loadComponent:function(name){
-
+        require();
     },
     __constructor:function(){
         var self = this;

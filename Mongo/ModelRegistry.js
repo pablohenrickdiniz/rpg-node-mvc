@@ -1,21 +1,20 @@
 var paths = require('node-mvc/config/paths');
-var database_config = require(paths.APP_ROOT+'/config/app').database;
 var ucfirst = require('ucfirst');
 var file = require('node-mvc/config/file');
 var mongoose = require('mongoose');
 var FieldError = require('./FieldError');
 var moment = require('moment');
 var app_config = require(paths.APP_ROOT+'/config/app');
+var db_registry = require('./DbRegistry');
 
 module.exports = {
     models: [],
     configs: [],
-    conn: [],
     get: function (modelName) {
         var self = this;
         if (self.models[modelName] == undefined) {
             var model_config = self.getModelConfig(modelName);
-            var con = self.connection('default');
+            var con = db_registry.get('default');
             var model_schema = new mongoose.Schema(model_config._schema);
             Object.keys(model_config._methods).forEach(function (key) {
                 model_schema.methods[key] = model_config._methods[key];
@@ -45,32 +44,10 @@ module.exports = {
         var self = this;
         if (self.configs[modelName] == undefined) {
             var module = paths.APP_MODEL + '/' + modelName;
-            var model_config = require(module);
-            self.configs[modelName] = model_config;
+            self.configs[modelName] = require(module);
         }
 
         return self.configs[modelName];
-    },
-    connection: function (connectionName) {
-        var self = this;
-        if (self.conn[connectionName] == undefined) {
-            if (database_config[connectionName] != undefined) {
-                var config = database_config[connectionName];
-                var uri = ['mongodb://', config.host, '/', config.database, ':', config.port].join('');
-                self.conn[connectionName] = mongoose.createConnection(uri, {
-                    user: config.user,
-                    pass: config.pass,
-                    db: config.db,
-                    server: config.server,
-                    replset: config.replset
-                });
-            }
-            else {
-                throw new Error('Database connection ' + connectionName + ' not defined');
-            }
-        }
-
-        return self.conn[connectionName];
     },
     prepareModelCallbacks: function (fields, schema, model, parent) {
         var self = this;

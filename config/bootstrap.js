@@ -1,20 +1,15 @@
 var paths = require('./paths');
-var regex = require('./regex');
 var express = require('express');
 var app = express();
-var ucfirst = require('ucfirst');
 var app_config = require(paths.APP_ROOT+'/config/app');
-var file = require('node-mvc/config/file');
-var moment = require('moment');
 var annotation = require('annotation');
 var controllers_dir = paths.APP_CONTROLLER;
 var defaultController = _transformClass(require('node-mvc/Controller/Controller'));
-var deepmerge = require('deepmerge');
 var ModelRegistry = require('node-mvc/Mongo/ModelRegistry');
 var _ = require('lodash');
 
-
 _initializeHeaders();
+_initializeSession(app);
 _initializeLocale();
 _initializeBehaviors(['file']);
 _initializeControllers(function(){
@@ -42,12 +37,14 @@ function _initializeHeaders(){
 
 
 function _initializeControllers(callback){
+    var file = require('node-mvc/config/file');
+    var regex = require('./regex');
     if (file.file_exists(controllers_dir)) {
         var file_list = file.file_list(controllers_dir);
         var controllers = [];
-        file_list.forEach(function(file){
-            if(regex.controller_file.test(file)){
-                controllers.push(file);
+        file_list.forEach(function(fileItem){
+            if(regex.controller_file.test(fileItem)){
+                controllers.push(fileItem);
             }
         });
     }
@@ -204,6 +201,7 @@ function _getAnnotationValuesByKey(key,annotations){
 
 
 function _initializeBehaviors(behaviors){
+    var ucfirst = require('ucfirst');
     if(behaviors instanceof  Array){
         behaviors.forEach(function(name){
             var behaviorFile = 'node-mvc/Behavior/'+ucfirst(name)+'Behavior';
@@ -215,6 +213,7 @@ function _initializeBehaviors(behaviors){
 }
 
 function _initializeLocale(){
+    var moment = require('moment');
     var defaultLocale = app_config.defaultLocale;
     if(defaultLocale == undefined || defaultLocale.lang == undefined){
         throw new TypeError('Locale is not configured');
@@ -222,6 +221,23 @@ function _initializeLocale(){
     else{
         moment.locale(defaultLocale.lang,defaultLocale.options);
     }
+}
+
+
+function _initializeSession(app){
+    var session = require('express-session');
+    var MongoStore = require('connect-mongo')(session);
+    var DbRegistry = require('node-mvc/Mongo/DbRegistry');
+    app.use(session({
+        secret:app_config.session.secret,
+        store:new MongoStore({
+            mongooseConnection:DbRegistry.get(app_config.session.store.dbConnection)
+        }),
+        genid:function(){
+            return Math.random()*1000;
+        },
+        resave:true
+    }));
 }
 
 
