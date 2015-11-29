@@ -9,7 +9,6 @@ var ModelRegistry = require('node-mvc/Mongo/ModelRegistry');
 var _ = require('lodash');
 
 _initializeHeaders();
-_initializeSession(app);
 _initializeLocale();
 _initializeBehaviors(['file']);
 _initializeControllers(function(){
@@ -222,32 +221,6 @@ function _initializeLocale(){
         moment.locale(defaultLocale.lang,defaultLocale.options);
     }
 }
-
-
-function _initializeSession(app){
-    var session = require('express-session');
-    var MongoStore = require('connect-mongo')(session);
-    var DbRegistry = require('node-mvc/Mongo/DbRegistry');
-    app.use(session({
-        secret:app_config.session.secret,
-        store:new MongoStore({
-            mongooseConnection:DbRegistry.get(app_config.session.store.dbConnection)
-        }),
-        genid:function(){
-            return Math.random()*1000;
-        },
-        resave:true
-    }));
-}
-
-
-
-
-
-
-
-
-
 
 
 
