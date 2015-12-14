@@ -1,18 +1,17 @@
 {
   "name": "node-mvc",
   "version": "0.0.1",
-  "description": "",
   "main": "index.js",
   "dependencies": {
     "annotation": "^0.1.0",
-    "lodash": "^3.10.1",
-    "mmmagic": "^0.4.1",
-    "deepmerge": "^0.2.10",
-    "ucfirst": "^1.0.0",
     "moment": "^2.10.6",
-    "express": "^4.13.3",
+    "mmmagic": "^0.4.1",
+    "mongoose": "^4.2.7",
     "multer": "^1.1.0",
-    "mongoose": "^4.2.7"
+    "ucfirst": "^1.0.0",
+    "deepmerge": "^0.2.10",
+    "express": "^4.13.3",
+    "lodash": "^3.10.1"
   },
   "devDependencies": {},
   "scripts": {
@@ -22,10 +21,11 @@
     "type": "git",
     "url": "git+https://github.com/pablohenrickdiniz/node-mvc.git"
   },
-  "author": "",
+  "author": "Pablo Henrick Diniz",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pablohenrickdiniz/node-mvc/issues"
   },
-  "homepage": "https://github.com/pablohenrickdiniz/node-mvc#readme"
+  "homepage": "https://github.com/pablohenrickdiniz/node-mvc#readme",
+  "description": ""
 }
