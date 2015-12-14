@@ -10,7 +10,7 @@ var _ = require('lodash');
 
 _initializeHeaders();
 _initializeLocale();
-_initializeBehaviors(['file']);
+_initializeBodyParser(app);
 _initializeControllers(function(){
     app.listen(app_config.port);
     console.log('server is running at http://localhost:'+app_config.port);
@@ -32,6 +32,13 @@ function _initializeHeaders(){
         // Pass to next layer of middleware
         next();
     });
+}
+
+
+function _initializeBodyParser(app){
+    var bodyParser = require('body-parser');
+    app.post('/*',bodyParser.urlencoded({extended:true}));
+    app.put('/*',bodyParser.urlencoded({extended:true}));
 }
 
 
@@ -198,7 +205,7 @@ function _getAnnotationValuesByKey(key,annotations){
     return values;
 }
 
-
+/*
 function _initializeBehaviors(behaviors){
     var ucfirst = require('ucfirst');
     if(behaviors instanceof  Array){
@@ -209,7 +216,7 @@ function _initializeBehaviors(behaviors){
             behavior_instance._initialize(app);
         });
     }
-}
+}*/
 
 function _initializeLocale(){
     var moment = require('moment');
