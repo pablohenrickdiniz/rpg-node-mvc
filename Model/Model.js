@@ -1,9 +1,6 @@
-var m = require('rpg-node-mvc');
-
-
-var FieldError = m.FieldError,
-    ModelRegistry = m.ModelRegistry,
-    parse_messages = m.parseMessages;
+var FieldError = require('../Mongo/FieldError');
+var ModelRegistry = require('../Mongo/ModelRegistry');
+var parse_messages = require('../utils/parse_messages');
 
 var Model = {
     name: 'Model',

@@ -38,8 +38,8 @@ module.exports = function(){
 
     function _initializeBodyParser(app){
         var bodyParser = require('body-parser');
-        app.post('/*',bodyParser.urlencoded({extended:true}));
-        app.put('/*',bodyParser.urlencoded({extended:true}));
+        app.post('/*',bodyParser.json({ type: 'application/*+json' }));
+        app.put('/*',bodyParser.json({ type: 'application/*+json' }));
     }
 
 
@@ -138,32 +138,31 @@ module.exports = function(){
                             contentType = 'text/html';
                         }
 
+                        var args = [uri].concat(controller_instance[method]);
 
-                        var action = function(req,res,next){
-                            res.writeHead(200, {"Content-Type": contentType});
-                            controller_instance[method]();
-                            next();
-                        };
-
-                        router.all('/*',function(req,res,next){
-                            controller_instance.request = req;
-                            controller_instance.response = res;
-                            next();
+                        args = args.map(function(func){
+                            if(typeof func == 'function'){
+                                return function(req,res,next){
+                                    func.apply(controller_instance,[req,res,next]);
+                                };
+                            }
+                            return func;
                         });
+
                         routes_created = true;
                         requestMethods.forEach(function(requestMethod){
                             switch(requestMethod){
                                 case 'GET':
-                                    router.get(uri,action);
+                                    router.get.apply(router,args);
                                     break;
                                 case 'POST':
-                                    router.post(uri,action);
+                                    router.post.apply(router,args);
                                     break;
                                 case 'PUT':
-                                    router.put(uri,action);
+                                    router.put.apply(router,args);
                                     break;
                                 case 'DELETE':
-                                    router.delete(uri,action);
+                                    router.delete.apply(router,args);
                                     break;
                                 default:
                                     throw new Error('method '+requestMethod+' doesn\'t exists');
