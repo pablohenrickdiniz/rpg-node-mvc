@@ -1,4 +1,4 @@
-var paths =  require('rpg-node-mvc').paths,
+var paths =  require('../config/paths'),
     database_config = require(paths.APP_ROOT+'/config/app').database,
     mongoose = require('mongoose');
 

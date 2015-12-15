@@ -5,8 +5,8 @@ module.exports = function(){
     var app_config = require(paths.APP_ROOT+'/config/app');
     var annotation = require('annotation');
     var controllers_dir = paths.APP_CONTROLLER;
-    var defaultController = _transformClass(require('node-mvc/Controller/Controller'));
-    var ModelRegistry = require('node-mvc/Mongo/ModelRegistry');
+    var defaultController = _transformClass(require('../Controller/Controller'));
+    var ModelRegistry = require('../Mongo/ModelRegistry');
     var _ = require('lodash');
 
     _initializeHeaders();
@@ -44,7 +44,7 @@ module.exports = function(){
 
 
     function _initializeControllers(callback){
-        var file = require('node-mvc/config/file');
+        var file = require('../config/file');
         var regex = require('./regex');
         if (file.file_exists(controllers_dir)) {
             var file_list = file.file_list(controllers_dir);
