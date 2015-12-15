@@ -1,5 +1,6 @@
 module.exports = {
     Model:require('./Model/Model'),
     DbRegistry:require('./Mongo/DbRegistry'),
-    ModelRegistry:require('./Mongo/ModelRegistry')
+    ModelRegistry:require('./Mongo/ModelRegistry'),
+    bootstrap:require('./config/bootstrap')
 };
