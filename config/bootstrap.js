@@ -148,7 +148,7 @@ module.exports = function(){
                             }
                             return func;
                         });
-
+                        
                         routes_created = true;
                         requestMethods.forEach(function(requestMethod){
                             switch(requestMethod){
