@@ -5,5 +5,6 @@ module.exports = {
     bootstrap:require('./config/bootstrap'),
     parseMessages:require('./utils/parse_messages'),
     parseName:require('./utils/parse_name'),
-    FieldError:require('./Mongo/FieldError')
+    FieldError:require('./Mongo/FieldError'),
+    paths:require('./config/paths')
 };

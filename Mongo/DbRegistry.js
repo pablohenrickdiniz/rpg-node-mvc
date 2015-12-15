@@ -1,6 +1,6 @@
-var paths = require('node-mvc/config/paths');
-var database_config = require(paths.APP_ROOT+'/config/app').database;
-var mongoose = require('mongoose');
+var paths =  require('rpg-node-mvc').paths,
+    database_config = require(paths.APP_ROOT+'/config/app').database,
+    mongoose = require('mongoose');
 
 module.exports = {
     conn: [],
