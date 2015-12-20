@@ -1,6 +1,7 @@
 module.exports = function(){
     var paths = require('./paths');
     var express = require('express');
+    var session = require('express-session');
     var app = express();
     var app_config = require(paths.APP_ROOT+'/config/app');
     var annotation = require('annotation');
@@ -9,8 +10,10 @@ module.exports = function(){
     var ModelRegistry = require('../Mongo/ModelRegistry');
     var _ = require('lodash');
 
+
     _initializeHeaders();
     _initializeLocale();
+    _initializeSession(app);
     _initializeBodyParser(app);
     _initializeControllers(function(){
         app.listen(app_config.port);
@@ -18,18 +21,34 @@ module.exports = function(){
     });
 
 
+    function _initializeSession(app){
+        var session = require('express-session');
+        var sess = session({
+            secret:'secret',
+            resave:true,
+            saveUninitialized:true,
+            cookie:{
+                httpOnly:false,
+                expires:false
+            },
+            store:new session.MemoryStore()
+        });
+        app.use(sess);
+    }
+
+
     function _initializeHeaders(){
         app.use(function (req, res, next) {
             // Website you wish to allow to connect
-            res.setHeader('Access-Control-Allow-Origin', 'http://localhost:63342');
+            res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
 
             // Request methods you wish to allow
-            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+            res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
             // Request headers you wish to allow
-            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+            res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, Authorization');
             // Set to true if you need the website to include cookies in the requests sent
             // to the API (e.g. in case you use sessions)
-            res.setHeader('Access-Control-Allow-Credentials', true);
+            res.setHeader('Access-Control-Allow-Credentials', 'true');
             // Pass to next layer of middleware
             next();
         });
@@ -114,7 +133,7 @@ module.exports = function(){
 
 
             var router_name = controller_instance.name;
-            var router = express.Router();
+            var router = controller_instance.getRouter();
             annotation(file_path,function(AnnotationReader){
                 //get annotations related to the class
                 var routes_created = false;
