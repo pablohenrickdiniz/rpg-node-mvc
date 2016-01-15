@@ -137,6 +137,7 @@ module.exports = function(){
             annotation(file_path,function(AnnotationReader){
                 //get annotations related to the class
                 var routes_created = false;
+
                 Object.keys(controller.methods).forEach(function(method){
                     var annotations = AnnotationReader.getMethodAnnotations(method);
                     var requestMethods = _getAnnotationValuesByKey('RequestMethod',annotations);
@@ -157,6 +158,8 @@ module.exports = function(){
                             contentType = 'text/html';
                         }
 
+                        console.log(router_name+uri);
+
                         var args = [uri].concat(controller_instance[method]);
 
                         args = args.map(function(func){
@@ -167,6 +170,8 @@ module.exports = function(){
                             }
                             return func;
                         });
+
+
                         
                         routes_created = true;
                         requestMethods.forEach(function(requestMethod){
@@ -194,11 +199,28 @@ module.exports = function(){
                     app.use('/'+router_name,router);
                 }
 
+
                 _recursiveCheckAnotations(files,callback);
             });
         }
         else{
             callback();
+        }
+    }
+
+    function _initializeFilters(controller_instance){
+        if(controller_instance._filters.constructor == {}.constructor){
+            var ucfirst = require('ucfirst');
+            var router = controller_instance.getRouter();
+            Object.keys(controller_instance._filters).forEach(function(method){
+                var filters = controller_instance._filters[method];
+                filters = [].concat(filters);
+                filters.forEach(function(filter){
+                    var file_path = paths.APP_FILTER+'/'+ucfirst(filter)+'Filter';
+                    var file = require(file_path);
+
+                });
+            });
         }
     }
 

@@ -10,6 +10,6 @@ paths.TMP_FILES = www_dir+'/tmp';
 paths.APP_MODEL = paths.APP_SRC+'/Model';
 paths.APP_CONTROLLER = paths.APP_SRC+'/Controller';
 paths.APP_COMPONENT = paths.APP_CONTROLLER+'/Component';
-
+paths.APP_FILTER = paths.APP_SRC+'/Filter';
 
 module.exports = paths;
