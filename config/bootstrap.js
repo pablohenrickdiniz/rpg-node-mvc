@@ -155,8 +155,6 @@ module.exports = function(app,callback){
                             contentType = 'text/html';
                         }
 
-                        console.log(router_name+uri);
-
                         var args = [uri].concat(controller_instance[method]);
 
                         args = args.map(function(func){
@@ -170,8 +168,6 @@ module.exports = function(app,callback){
                             return func;
                         });
 
-
-                        
                         routes_created = true;
                         requestMethods.forEach(function(requestMethod){
                             switch(requestMethod){
