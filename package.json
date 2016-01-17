@@ -1,17 +1,9 @@
 {
   "name": "rpg-node-mvc",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "description": "rpg mvc for rpg server",
   "main": "index.js",
-  "dependencies": {
-    "annotation": "^0.1.0",
-    "moment": "^2.10.6",
-    "mongoose": "^4.2.7",
-    "multer": "^1.1.0",
-    "ucfirst": "^1.0.0",
-    "deepmerge": "^0.2.10",
-    "express": "^4.13.3",
-    "lodash": "^3.10.1"
-  },
+  "dependencies": {},
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,11 +12,14 @@
     "type": "git",
     "url": "git+https://github.com/pablohenrickdiniz/node-mvc.git"
   },
-  "author": "Pablo Henrick Diniz",
+  "keywords": [
+    "mvc",
+    "bootstrap"
+  ],
+  "author": "Pablo Henrick Diniz <phydokz@hotmail.com> (https://github.com/pablohenrickdiniz/)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pablohenrickdiniz/node-mvc/issues"
   },
-  "homepage": "https://github.com/pablohenrickdiniz/node-mvc#readme",
-  "description": ""
+  "homepage": "https://github.com/pablohenrickdiniz/node-mvc#readme"
 }

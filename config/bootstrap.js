@@ -1,8 +1,7 @@
-module.exports = function(){
+module.exports = function(app){
     var paths = require('./paths');
     var express = require('express');
     var session = require('express-session');
-    var app = express();
     var app_config = require(paths.APP_ROOT+'/config/app');
     var annotation = require('annotation');
     var controllers_dir = paths.APP_CONTROLLER;
