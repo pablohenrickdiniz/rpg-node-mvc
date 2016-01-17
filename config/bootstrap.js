@@ -1,4 +1,4 @@
-module.exports = function(app){
+module.exports = function(app,callback){
     var paths = require('./paths');
     var express = require('express');
     var session = require('express-session');
@@ -13,10 +13,7 @@ module.exports = function(app){
     _initializeLocale();
     _initializeSession(app);
     _initializeBodyParser(app);
-    _initializeControllers(function(){
-        app.listen(app_config.port);
-        console.log('server is running at http://localhost:'+app_config.port);
-    });
+    _initializeControllers(callback);
 
 
     function _initializeSession(app){
