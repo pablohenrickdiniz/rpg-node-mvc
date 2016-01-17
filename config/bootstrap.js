@@ -148,7 +148,7 @@ module.exports = function(app){
                             return val.toUpperCase();
                         });
 
-                        requestMethods = _.unique(requestMethods,true);
+                        requestMethods = _.uniq(requestMethods,true);
                         var uri = _getAnnotationValueByKey('Uri',annotations);
                         if(uri == null){
                             uri =  '/'+method;
