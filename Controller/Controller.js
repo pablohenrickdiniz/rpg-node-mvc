@@ -4,6 +4,8 @@ module.exports = {
         var self = this;
         self.name = null;
         self.modelName = null;
+        self.request = null;
+        self.response = null;
     },
     router:null,
     getRouter:function(){
@@ -12,6 +14,12 @@ module.exports = {
             self.router = express.Router();
         }
         return self.router;
+    },
+    json:function(data){
+        this.response.write(JSON.stringify(data));
+    },
+    endJson:function(data){
+        this.response.end(JSON.stringify(data));
     }
 };
 

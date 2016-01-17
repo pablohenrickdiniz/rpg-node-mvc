@@ -6,6 +6,7 @@ var FieldError = require('./FieldError');
 var moment = require('moment');
 var app_config = require(paths.APP_ROOT+'/config/app');
 var db_registry = require('./DbRegistry');
+var mongoosePaginate = require('mongoose-paginate');
 
 module.exports = {
     models: [],
@@ -16,6 +17,7 @@ module.exports = {
             var model_config = self.getModelConfig(modelName);
             var con = db_registry.get('default');
             var model_schema = new mongoose.Schema(model_config._schema);
+            model_schema.plugin(mongoosePaginate);
             Object.keys(model_config._methods).forEach(function (key) {
                 model_schema.methods[key] = model_config._methods[key];
             });

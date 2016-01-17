@@ -10,7 +10,6 @@ module.exports = function(){
     var ModelRegistry = require('../Mongo/ModelRegistry');
     var _ = require('lodash');
 
-
     _initializeHeaders();
     _initializeLocale();
     _initializeSession(app);
@@ -40,7 +39,9 @@ module.exports = function(){
     function _initializeHeaders(){
         app.use(function (req, res, next) {
             // Website you wish to allow to connect
-            res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+            if(req.headers.origin){
+                res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+            }
 
             // Request methods you wish to allow
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
@@ -65,8 +66,8 @@ module.exports = function(){
     function _initializeControllers(callback){
         var file = require('../config/file');
         var regex = require('./regex');
-        if (file.file_exists(controllers_dir)) {
-            var file_list = file.file_list(controllers_dir);
+        if (file.exists(controllers_dir)) {
+            var file_list = file.list(controllers_dir);
             var controllers = [];
             file_list.forEach(function(fileItem){
                 if(regex.controller_file.test(fileItem)){
@@ -165,6 +166,8 @@ module.exports = function(){
                         args = args.map(function(func){
                             if(typeof func == 'function'){
                                 return function(req,res,next){
+                                    controller_instance.request = req;
+                                    controller_instance.response = res;
                                     func.apply(controller_instance,[req,res,next]);
                                 };
                             }
