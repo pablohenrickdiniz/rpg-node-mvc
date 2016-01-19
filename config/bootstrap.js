@@ -18,6 +18,11 @@ module.exports = function(app,callback){
 
     function _initializeSession(app){
         var session = require('express-session');
+        var MongoStore = require('connect-mongo')(session);
+        var DbRegistry = require('rpg-node-mvc').DbRegistry;
+
+
+
         var sess = session({
             secret:'secret',
             resave:true,
@@ -26,7 +31,10 @@ module.exports = function(app,callback){
                 httpOnly:false,
                 expires:false
             },
-            store:new session.MemoryStore()
+            //store:new session.MemoryStore()
+            store:new MongoStore({
+                mongooseConnection:DbRegistry.get('session')
+            })
         });
         app.use(sess);
     }
