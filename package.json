@@ -8,7 +8,7 @@
     "bcrypt": "^0.8.5",
     "body-parser": "^1.14.2",
     "deepmerge": "^0.2.10",
-    "express": "^4.13.3",
+    "express": "4.13.3",
     "express-session": "^1.13.0",
     "lodash": "^4.0.0",
     "moment": "^2.11.1",
