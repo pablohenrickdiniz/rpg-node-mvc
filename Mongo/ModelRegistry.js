@@ -15,7 +15,7 @@ module.exports = {
         var self = this;
         if (self.models[modelName] == undefined) {
             var model_config = self.getModelConfig(modelName);
-            var con = db_registry.get('default');
+            var con = db_registry.get(model_config.defaultConnection | 'default');
             var model_schema = new mongoose.Schema(model_config._schema);
             model_schema.plugin(mongoosePaginate);
             Object.keys(model_config._methods).forEach(function (key) {
