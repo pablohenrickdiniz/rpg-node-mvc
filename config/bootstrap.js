@@ -314,13 +314,18 @@ module.exports = function(app,callback){
 
             try{
                 var stat = fs.statSync(dir);
-                var mime = require('mime').lookup(dir);
-                res.writeHead(200, {
-                    'Content-Type': mime,
-                    'Content-Length': stat.size
-                });
-                var readStream = fs.createReadStream(dir);
-                readStream.pipe(res);
+                if(stat.isFile()){
+                    var mime = require('mime').lookup(dir);
+                    res.writeHead(200, {
+                        'Content-Type': mime,
+                        'Content-Length': stat.size
+                    });
+                    var readStream = fs.createReadStream(dir);
+                    readStream.pipe(res);
+                }
+                else{
+                    res.end();
+                }
             }
             catch(e){
                 res.end();
