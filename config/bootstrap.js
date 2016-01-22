@@ -1,19 +1,29 @@
 module.exports = function(app,callback){
     var paths = require('./paths');
+    var path = require('path');
     var express = require('express');
     var session = require('express-session');
-    var app_config = require(paths.APP_ROOT+'/config/app');
+    var app_config = require(paths('appConfig'));
     var annotation = require('annotation');
-    var controllers_dir = paths.APP_CONTROLLER;
+    var controllers_dir = paths('controllers');
     var defaultController = _transformClass(require('../Controller/Controller'));
-    var ModelRegistry = require('../Mongo/ModelRegistry');
+    var ModelRegistry = require('../Database/ModelRegistry');
     var _ = require('lodash');
 
+    _initializeDirs();
     _initializeHeaders();
     _initializeLocale();
     _initializeSession(app);
     _initializeBodyParser(app);
     _initializeControllers(callback);
+
+
+
+    process.on('SIGINT',function(){
+        _finalize(function(){
+            process.exit(0);
+        });
+    });
 
 
     function _initializeSession(app){
@@ -219,7 +229,7 @@ module.exports = function(app,callback){
                 var filters = controller_instance._filters[method];
                 filters = [].concat(filters);
                 filters.forEach(function(filter){
-                    var file_path = paths.APP_FILTER+'/'+ucfirst(filter)+'Filter';
+                    var file_path = path.join(paths('filters'),ucfirst(filter)+'Filter');
                     var file = require(file_path);
 
                 });
@@ -271,5 +281,29 @@ module.exports = function(app,callback){
         else{
             moment.locale(defaultLocale.lang,defaultLocale.options);
         }
+    }
+
+    function _finalize(callback){
+        console.log('parando aplicação...');
+        var registry = require('../Database/DbRegistry');
+        registry.disconnectAll(callback);
+    }
+
+    function _initializeDirs(){
+        console.log('criando diretórios...');
+        var dirs = require(paths('appConfig')).dirs;
+        var fs = require('fs');
+        dirs.forEach(function(dir){
+            dir = path.join(paths('webroot'),dir);
+            try{
+                fs.mkdirSync(dir);
+                console.log('diretório '+dir+' já criado...');
+            }
+            catch(e){
+                if(e.code == 'EEXIST'){
+                    console.log('diretório '+dir+' já existe...');
+                }
+            }
+        });
     }
 };

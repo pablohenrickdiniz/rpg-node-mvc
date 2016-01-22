@@ -1,15 +1,20 @@
 var path = require('path'),
-    www_dir = path.resolve(__dirname+'/../../..');
+    root = require('app-root-path').path;
 
-var paths = {};
-paths.WWW_DIR = www_dir;
-paths.APP_ROOT = www_dir+'/app';
-paths.WWW_ROOT = paths.APP_ROOT+'/webroot';
-paths.APP_SRC = paths.APP_ROOT+'/src';
-paths.TMP_FILES = www_dir+'/tmp';
-paths.APP_MODEL = paths.APP_SRC+'/Model';
-paths.APP_CONTROLLER = paths.APP_SRC+'/Controller';
-paths.APP_COMPONENT = paths.APP_CONTROLLER+'/Component';
-paths.APP_FILTER = paths.APP_SRC+'/Filter';
+var paths = {
+    root:root,
+    appConfig:path.join(root,'app','config','app'),
+    webroot:path.join(root,'app','webroot'),
+    tmp:path.join(root,'tmp'),
+    models:path.join(root,'app','src','Model'),
+    controllers:path.join(root,'app','src','Controller'),
+    components:path.join(root,'app','src','Controller','Component'),
+    filters:path.join(root,'app','src','Filter')
+};
 
-module.exports = paths;
+module.exports = function(name){
+    if(paths[name] != undefined){
+        return paths[name];
+    }
+    return '';
+};

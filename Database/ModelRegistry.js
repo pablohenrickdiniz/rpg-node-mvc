@@ -1,10 +1,11 @@
 var paths = require('../config/paths');
+var path = require('path');
 var ucfirst = require('ucfirst');
 var file = require('../config/file');
 var mongoose = require('mongoose');
 var FieldError = require('./FieldError');
 var moment = require('moment');
-var app_config = require(paths.APP_ROOT+'/config/app');
+var app_config = require(paths('appConfig'));
 var db_registry = require('./DbRegistry');
 var mongoosePaginate = require('mongoose-paginate');
 
@@ -46,7 +47,7 @@ module.exports = {
         modelName = ucfirst(modelName);
         var self = this;
         if (self.configs[modelName] == undefined) {
-            var module = paths.APP_MODEL + '/' + modelName;
+            var module = path.join(paths('models'), modelName);
             self.configs[modelName] = require(module);
         }
 
