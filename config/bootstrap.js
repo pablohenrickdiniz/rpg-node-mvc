@@ -10,14 +10,13 @@ module.exports = function(app,callback){
     var ModelRegistry = require('../Database/ModelRegistry');
     var _ = require('lodash');
 
+    _initializeWebroot(app);
     _initializeDirs();
     _initializeHeaders();
     _initializeLocale();
     _initializeSession(app);
     _initializeBodyParser(app);
     _initializeControllers(callback);
-
-    console.log(process);
 
     process.on('SIGINT',function(){
         _finalize(function(){
@@ -306,4 +305,28 @@ module.exports = function(app,callback){
             }
         });
     }
+
+    function _initializeWebroot(app){
+        app.get('/*',function(req,res,next){
+            var url = req.params[0];
+            var dir = path.join(paths('webroot'),url);
+            var fs = require('fs');
+
+            try{
+                var stat = fs.statSync(dir);
+                var mime = require('mime').lookup(dir);
+                res.writeHead(200, {
+                    'Content-Type': mime,
+                    'Content-Length': stat.size
+                });
+                var readStream = fs.createReadStream(dir);
+                readStream.pipe(res);
+            }
+            catch(e){
+                res.end();
+            }
+        });
+    }
 };
+
+
