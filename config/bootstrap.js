@@ -10,9 +10,9 @@ module.exports = function(app,callback){
     var ModelRegistry = require('../Database/ModelRegistry');
     var _ = require('lodash');
 
+    _initializeHeaders(app);
     _initializeWebroot(app);
     _initializeDirs();
-    _initializeHeaders();
     _initializeLocale();
     _initializeSession(app);
     _initializeBodyParser(app);
@@ -29,8 +29,6 @@ module.exports = function(app,callback){
         var session = require('express-session');
         var MongoStore = require('connect-mongo')(session);
         var DbRegistry = require('rpg-node-mvc').DbRegistry;
-
-
 
         var sess = session({
             secret:'secret',
@@ -49,7 +47,7 @@ module.exports = function(app,callback){
     }
 
 
-    function _initializeHeaders(){
+    function _initializeHeaders(app){
         app.use(function (req, res, next) {
             // Website you wish to allow to connect
             if(req.headers.origin){
@@ -324,11 +322,11 @@ module.exports = function(app,callback){
                     readStream.pipe(res);
                 }
                 else{
-                    res.end();
+                    next();
                 }
             }
             catch(e){
-                res.end();
+                next();
             }
         });
     }
