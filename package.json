@@ -1,6 +1,6 @@
 {
   "name": "rpg-node-mvc",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "rpg mvc",
   "main": "index.js",
   "dependencies": {
