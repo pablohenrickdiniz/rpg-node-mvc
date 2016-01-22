@@ -17,7 +17,7 @@ module.exports = function(app,callback){
     _initializeBodyParser(app);
     _initializeControllers(callback);
 
-
+    console.log(process);
 
     process.on('SIGINT',function(){
         _finalize(function(){
