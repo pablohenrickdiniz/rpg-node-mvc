@@ -11,7 +11,7 @@ var Model = {
         save: function (data, callback) {
             var self = this;
             var instance = new self(data);
-            instance.save(function (err, result) {
+            instance.save(function (err, doc) {
                 if (err) {
                     var errors = {};
                     var errors_json = {};
@@ -25,7 +25,7 @@ var Model = {
                     errors = parse_messages(errors, config._messages);
                 }
 
-                callback(errors, data);
+                callback(errors, doc);
             });
         }
     },
