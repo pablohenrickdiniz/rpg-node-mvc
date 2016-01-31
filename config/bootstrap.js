@@ -53,6 +53,9 @@ module.exports = function(app,callback){
             if(req.headers.origin){
                 res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
             }
+            else{
+                res.setHeader('Access-Control-Allow-Origin', '*');
+            }
 
             // Request methods you wish to allow
             res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
