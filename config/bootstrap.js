@@ -9,6 +9,7 @@ module.exports = function(app,callback){
     var defaultController = _transformClass(require('../Controller/Controller'));
     var ModelRegistry = require('../Database/ModelRegistry');
     var _ = require('lodash');
+    var mkdirp = require('mkdirp');
 
     _initializeHeaders(app);
     _initializeWebroot(app);
@@ -295,15 +296,14 @@ module.exports = function(app,callback){
         var fs = require('fs');
         dirs.forEach(function(dir){
             dir = path.join(paths('webroot'),dir);
-            try{
-                fs.mkdirSync(dir);
-                console.log('diretório '+dir+' já criado...');
-            }
-            catch(e){
-                if(e.code == 'EEXIST'){
-                    console.log('diretório '+dir+' já existe...');
-                }
-            }
+            mkdirp(dir, function (err) {
+               if(err){
+                    console.log(err);
+               }
+               else{
+                   console.log('O diretório '+dir+' foi criado...');
+               }
+            });
         });
     }
 
