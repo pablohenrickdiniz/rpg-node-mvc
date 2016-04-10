@@ -1,5 +1,5 @@
 {
-  "name": "rpg-node-mvc",
+  "name": "phydokz/rpg-node-mvc",
   "description": "rpg mvc",
   "main": "index.js",
   "dependencies": {
