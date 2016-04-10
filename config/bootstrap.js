@@ -12,7 +12,7 @@ module.exports = function(app,callback){
     var mkdirp = require('mkdirp');
 
     _initializeHeaders(app);
-    _initializeWebroot(app);
+    //_initializeWebroot(app);
     _initializeDirs();
     _initializeLocale();
     _initializeSession(app);
@@ -308,32 +308,32 @@ module.exports = function(app,callback){
         });
     }
 
-    function _initializeWebroot(app){
-        //app.get('/*',function(req,res,next){
-        //    var url = req.params[0];
-        //    var dir = path.join(paths('webroot'),url);
-        //    var fs = require('fs');
-        //
-        //    try{
-        //        var stat = fs.statSync(dir);
-        //        if(stat.isFile()){
-        //            var mime = require('mime').lookup(dir);
-        //            res.writeHead(200, {
-        //                'Content-Type': mime,
-        //                'Content-Length': stat.size
-        //            });
-        //            var readStream = fs.createReadStream(dir);
-        //            readStream.pipe(res);
-        //        }
-        //        else{
-        //            next();
-        //        }
-        //    }
-        //    catch(e){
-        //        next();
-        //    }
-        //});
-    }
+    //function _initializeWebroot(app){
+    //    //app.get('/*',function(req,res,next){
+    //    //    var url = req.params[0];
+    //    //    var dir = path.join(paths('webroot'),url);
+    //    //    var fs = require('fs');
+    //    //
+    //    //    try{
+    //    //        var stat = fs.statSync(dir);
+    //    //        if(stat.isFile()){
+    //    //            var mime = require('mime').lookup(dir);
+    //    //            res.writeHead(200, {
+    //    //                'Content-Type': mime,
+    //    //                'Content-Length': stat.size
+    //    //            });
+    //    //            var readStream = fs.createReadStream(dir);
+    //    //            readStream.pipe(res);
+    //    //        }
+    //    //        else{
+    //    //            next();
+    //    //        }
+    //    //    }
+    //    //    catch(e){
+    //    //        next();
+    //    //    }
+    //    //});
+    //}
 };
 
 
