@@ -28,13 +28,17 @@ module.exports = {
             });
             Object.keys(model_config._virtuals).forEach(function (key) {
                 var config = model_config._virtuals[key];
+                var virtual = model_schema.virtual(key);
                 if (config.get != undefined && typeof config.get == 'function') {
-                    model_schema.virtual(key).get(config.get);
+                    virtual.get(config.get);
                 }
-                if (config.set != undefined && typeof config.get == 'function') {
-                    model_schema.virtual(key).set(config.set);
+                if (config.set != undefined && typeof config.set == 'function') {
+                    virtual.set(config.set);
                 }
             });
+
+            model_schema.set('toJSON', { getters: true, virtuals: true });
+            model_schema.set('toObject', { getters: true, virtuals: true });
 
             var model = con.model(modelName, model_schema);
             self.prepareModelCallbacks(model_config._schema, model_schema, model);

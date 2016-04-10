@@ -27,6 +27,7 @@ module.exports = function(app,callback){
 
 
     function _initializeSession(app){
+        /*
         var session = require('express-session');
         var MongoStore = require('connect-mongo')(session);
         var DbRegistry = require('rpg-node-mvc').DbRegistry;
@@ -44,7 +45,7 @@ module.exports = function(app,callback){
                 mongooseConnection:DbRegistry.get('session')
             })
         });
-        app.use(sess);
+        app.use(sess);*/
     }
 
 
@@ -73,8 +74,8 @@ module.exports = function(app,callback){
 
     function _initializeBodyParser(app){
         var bodyParser = require('body-parser');
-        app.post('/*',bodyParser.json({ type: 'application/*+json' }));
-        app.put('/*',bodyParser.json({ type: 'application/*+json' }));
+        app.post('/*',bodyParser.json({limit:'100mb'}));
+        app.put('/*',bodyParser.json({limit:'100mb'}));
     }
 
 
@@ -308,30 +309,30 @@ module.exports = function(app,callback){
     }
 
     function _initializeWebroot(app){
-        app.get('/*',function(req,res,next){
-            var url = req.params[0];
-            var dir = path.join(paths('webroot'),url);
-            var fs = require('fs');
-
-            try{
-                var stat = fs.statSync(dir);
-                if(stat.isFile()){
-                    var mime = require('mime').lookup(dir);
-                    res.writeHead(200, {
-                        'Content-Type': mime,
-                        'Content-Length': stat.size
-                    });
-                    var readStream = fs.createReadStream(dir);
-                    readStream.pipe(res);
-                }
-                else{
-                    next();
-                }
-            }
-            catch(e){
-                next();
-            }
-        });
+        //app.get('/*',function(req,res,next){
+        //    var url = req.params[0];
+        //    var dir = path.join(paths('webroot'),url);
+        //    var fs = require('fs');
+        //
+        //    try{
+        //        var stat = fs.statSync(dir);
+        //        if(stat.isFile()){
+        //            var mime = require('mime').lookup(dir);
+        //            res.writeHead(200, {
+        //                'Content-Type': mime,
+        //                'Content-Length': stat.size
+        //            });
+        //            var readStream = fs.createReadStream(dir);
+        //            readStream.pipe(res);
+        //        }
+        //        else{
+        //            next();
+        //        }
+        //    }
+        //    catch(e){
+        //        next();
+        //    }
+        //});
     }
 };
 
